@@ -81,8 +81,8 @@ const setUpLiskJSCryptoStubs = () => {
 		'getKeys',
 		'encryptPassphraseWithPassword',
 		'decryptPassphraseWithPassword',
-		'encryptMessageWithSecret',
-		'decryptMessageWithSecret',
+		'encryptMessageWithPassphrase',
+		'decryptMessageWithPassphrase',
 		'getAddressFromPublicKey',
 	].forEach(methodName => sandbox.stub(lisk.crypto, methodName));
 };
