@@ -14,66 +14,82 @@
  *
  */
 import os from 'os';
-import {
-	getFirstQuotedString,
-	getFirstBoolean,
-} from '../utils';
+import { getFirstQuotedString, getFirstBoolean } from '../utils';
 
 export function aDefaultConfigDirectoryPathShouldBeSet() {
-	(process.env).should.have.property('LISKY_CONFIG_DIR').equal(`${os.homedir()}/.lisky`);
+	process.env.should.have
+		.property('LISKY_CONFIG_DIR')
+		.equal(`${os.homedir()}/.lisky`);
 }
 
 export function itShouldUpdateTheConfigVariableToTheValue() {
 	const { config, value } = this.test.ctx;
 	const variable = getFirstQuotedString(this.test.title);
-	return (config).should.have.property(variable).equal(value);
+	return config.should.have.property(variable).equal(value);
 }
 
 export function itShouldUpdateTheConfigNestedVariableToBoolean() {
 	const { config } = this.test.ctx;
 	const nestedVariable = getFirstQuotedString(this.test.title).split('.');
 	const boolean = getFirstBoolean(this.test.title);
-	const value = nestedVariable.reduce((currentObject, nextKey) => currentObject[nextKey], config);
-	return (value).should.equal(boolean);
+	const value = nestedVariable.reduce(
+		(currentObject, nextKey) => currentObject[nextKey],
+		config,
+	);
+	return value.should.equal(boolean);
 }
 
 export function itShouldUpdateTheConfigVariableToBoolean() {
 	const { config } = this.test.ctx;
 	const variable = getFirstQuotedString(this.test.title);
 	const boolean = getFirstBoolean(this.test.title);
-	return (config).should.have.property(variable).equal(boolean);
+	return config.should.have.property(variable).equal(boolean);
 }
 
 export function itShouldResolveToTheConfig() {
 	const { returnValue, config } = this.test.ctx;
-	return (returnValue).should.be.fulfilledWith(config);
+	return returnValue.should.be.fulfilledWith(config);
 }
 
 export function theDefaultConfigShouldBeExported() {
 	const { config, defaultConfig } = this.test.ctx;
-	return (config).should.eql(defaultConfig);
+	return config.should.eql(defaultConfig);
 }
 
 export function theUsersConfigShouldBeExported() {
 	const { config, userConfig } = this.test.ctx;
-	return (config).should.eql(userConfig);
+	return config.should.eql(userConfig);
 }
 
 export function theUserShouldBeWarnedThatTheConfigWillNotBePersisted() {
-	return (console.warn).should.be.calledWithMatch(/Your configuration will not be persisted\./);
+	return console.warn.should.be.calledWithMatch(
+		/Your configuration will not be persisted\./,
+	);
 }
 
 export function theUserShouldBeInformedThatTheConfigFilePermissionsAreIncorrect() {
 	const { filePath } = this.test.ctx;
-	return (console.error).should.be.calledWithExactly(`Could not read config file. Please check permissions for ${filePath} or delete the file so we can create a new one from defaults.`);
+	return console.error.should.be.calledWithExactly(
+		`Could not read config file. Please check permissions for ${
+			filePath
+		} or delete the file so we can create a new one from defaults.`,
+	);
 }
 
 export function theUserShouldBeInformedThatTheConfigFileIsNotValidJSON() {
 	const { filePath } = this.test.ctx;
-	return (console.error).should.be.calledWithExactly(`Config file is not valid JSON. Please check ${filePath} or delete the file so we can create a new one from defaults.`);
+	return console.error.should.be.calledWithExactly(
+		`Config file is not valid JSON. Please check ${
+			filePath
+		} or delete the file so we can create a new one from defaults.`,
+	);
 }
 
 export function theUserShouldBeInformedThatAConfigLockfileWasFoundAtPath() {
 	const path = getFirstQuotedString(this.test.title);
-	return (console.error).should.be.calledWithExactly(`Config lockfile at ${path} found. Are you running Lisky in another process?`);
+	return console.error.should.be.calledWithExactly(
+		`Config lockfile at ${
+			path
+		} found. Are you running Lisky in another process?`,
+	);
 }

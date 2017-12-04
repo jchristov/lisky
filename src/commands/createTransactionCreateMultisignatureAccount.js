@@ -32,32 +32,43 @@ const description = `Creates a transaction which will register a multisignature 
 	- create transaction 4 24 2 215b667a32a5cd51a94c9c2046c11fffb08c65748febec099451e3b164452bca 922fbfdd596fa78269bbcadc67ec2a1cc15fc929a19c462169568d7a3df1a1aa
 `;
 
-const processInputs = (lifetime, minimum, keysgroup) =>
-	({ passphrase, secondPassphrase }) =>
-		transactions.createMultisignature(
-			passphrase,
-			secondPassphrase,
-			keysgroup,
-			lifetime,
-			minimum,
-		);
+const processInputs = (lifetime, minimum, keysgroup) => ({
+	passphrase,
+	secondPassphrase,
+}) =>
+	transactions.createMultisignature(
+		passphrase,
+		secondPassphrase,
+		keysgroup,
+		lifetime,
+		minimum,
+	);
 
 export const actionCreator = vorpal => async ({
-	lifetime, minimum, keysgroup, options,
+	lifetime,
+	minimum,
+	keysgroup,
+	options,
 }) => {
 	const {
 		passphrase: passphraseSource,
 		'second-passphrase': secondPassphraseSource,
 	} = options;
 
-	const publicKeysWithPlus = keysgroup.map((publicKey) => {
+	const publicKeysWithPlus = keysgroup.map(publicKey => {
 		try {
 			Buffer.from(publicKey, 'hex').toString('hex');
 		} catch (error) {
-			throw new Error(`Error processing public key ${publicKey}: ${error.message}.`);
+			throw new Error(
+				`Error processing public key ${publicKey}: ${error.message}.`,
+			);
 		}
 		if (publicKey.length !== 64) {
-			throw new Error(`Public key ${publicKey} length differs from the expected 64 hex characters for a public key.`);
+			throw new Error(
+				`Public key ${
+					publicKey
+				} length differs from the expected 64 hex characters for a public key.`,
+			);
 		}
 		return `+${publicKey}`;
 	});
@@ -73,27 +84,28 @@ export const actionCreator = vorpal => async ({
 			source: passphraseSource,
 			repeatPrompt: true,
 		},
-		secondPassphrase: !secondPassphraseSource ? null : {
-			source: secondPassphraseSource,
-			repeatPrompt: true,
-		},
-	})
-		.then(processInputs(
+		secondPassphrase: !secondPassphraseSource
+			? null
+			: {
+					source: secondPassphraseSource,
+					repeatPrompt: true,
+				},
+	}).then(
+		processInputs(
 			transactionLifetime,
 			transactionMinimumConfirmations,
 			publicKeysWithPlus,
-		));
+		),
+	);
 };
 
 const createTransactionRegisterSecondPassphrase = createCommand({
-	command: 'create transaction create multisignature account <lifetime> <minimum> <keysgroup...>',
+	command:
+		'create transaction create multisignature account <lifetime> <minimum> <keysgroup...>',
 	alias: 'create transaction 4',
 	description,
 	actionCreator,
-	options: [
-		commonOptions.passphrase,
-		commonOptions.secondPassphrase,
-	],
+	options: [commonOptions.passphrase, commonOptions.secondPassphrase],
 	errorPrefix: 'Could not create "create multisignature group" transaction',
 });
 

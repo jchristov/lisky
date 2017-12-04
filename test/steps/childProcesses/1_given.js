@@ -14,9 +14,7 @@
  *
  */
 import childProcess from 'child_process';
-import {
-	getFirstQuotedString,
-} from '../utils';
+import { getFirstQuotedString } from '../utils';
 
 export function theSecondChildProcessExitsWithAnErrorThatCannotBeTrimmed() {
 	const error = new Error('myError');

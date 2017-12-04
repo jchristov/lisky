@@ -49,25 +49,19 @@ const setUpFsStubs = () => {
 };
 
 const setUpFsUtilsStubs = () => {
-	[
-		'readJsonSync',
-		'writeJsonSync',
-	].forEach(methodName => sandbox.stub(fsUtils, methodName));
+	['readJsonSync', 'writeJsonSync'].forEach(methodName =>
+		sandbox.stub(fsUtils, methodName),
+	);
 };
 
 const setUpConsoleStubs = () => {
-	[
-		'info',
-		'warn',
-		'error',
-	].forEach(methodName => sandbox.stub(console, methodName));
+	['info', 'warn', 'error'].forEach(methodName =>
+		sandbox.stub(console, methodName),
+	);
 };
 
 const setUpJSONStubs = () => {
-	[
-		'parse',
-		'stringify',
-	].forEach(methodName => sandbox.stub(JSON, methodName));
+	['parse', 'stringify'].forEach(methodName => sandbox.stub(JSON, methodName));
 };
 
 const setUpLockfileStubs = () => {
@@ -140,11 +134,9 @@ const setUpInputStubs = () => {
 };
 
 const setUpInputUtilsStubs = () => {
-	[
-		'getStdIn',
-		'getData',
-		'getPassphrase',
-	].forEach(methodName => sandbox.stub(inputUtils, methodName));
+	['getStdIn', 'getData', 'getPassphrase'].forEach(methodName =>
+		sandbox.stub(inputUtils, methodName),
+	);
 	inputUtils.getStdIn.resolves({});
 };
 
@@ -154,14 +146,17 @@ function setUpPrintStubs() {
 	this.test.ctx.printFunction = printFunction;
 }
 
-const setUpEnvVariable = variable => function setUpEnv() {
-	this.test.ctx.initialEnvVariableValue = process.env[variable];
-};
+const setUpEnvVariable = variable =>
+	function setUpEnv() {
+		this.test.ctx.initialEnvVariableValue = process.env[variable];
+	};
 
-const restoreEnvVariable = variable => function restoreEnv() {
-	const { initialEnvVariableValue } = this.test.ctx;
-	if (typeof initialEnvVariableValue !== 'undefined') process.env[variable] = initialEnvVariableValue;
-};
+const restoreEnvVariable = variable =>
+	function restoreEnv() {
+		const { initialEnvVariableValue } = this.test.ctx;
+		if (typeof initialEnvVariableValue !== 'undefined')
+			process.env[variable] = initialEnvVariableValue;
+	};
 
 export function setUpCommandCreateAccount() {
 	setUpCryptoStubs();

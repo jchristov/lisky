@@ -19,64 +19,62 @@ import { printResult } from '../utils/print';
 const regExpAddress = /^\d{1,21}[L|l]$/;
 const regExpAmount = /^\d+(\.\d{1,8})?$/;
 
-const isStringInteger = (n) => {
+const isStringInteger = n => {
 	const parsed = parseInt(n, 10);
 	return !Number.isNaN(parsed) && parsed.toString() === n;
 };
 
-export const validateLifetime = (lifetime) => {
+export const validateLifetime = lifetime => {
 	if (!isStringInteger(lifetime)) {
 		throw new Error('Lifetime must be an integer.');
 	}
 	return true;
 };
 
-export const validateMinimum = (minimum) => {
+export const validateMinimum = minimum => {
 	if (!isStringInteger(minimum)) {
 		throw new Error('Minimum number of signatures must be an integer.');
 	}
 	return true;
 };
 
-export const validateAddress = (address) => {
+export const validateAddress = address => {
 	if (!address.match(regExpAddress)) {
 		throw new Error(`${address} is not a valid address.`);
 	}
 	return true;
 };
 
-export const validateAmount = (amount) => {
+export const validateAmount = amount => {
 	if (!amount.match(regExpAmount)) {
-		throw new Error('Amount must be a number with no more than 8 decimal places.');
+		throw new Error(
+			'Amount must be a number with no more than 8 decimal places.',
+		);
 	}
 	return true;
 };
 
-export const deAlias = type => (
-	type === 'address'
-		? 'account'
-		: type
-);
+export const deAlias = type => (type === 'address' ? 'account' : type);
 
-export const processQueryResult = type => result => (
-	result.error
-		? result
-		: result[deAlias(type)]
-);
+export const processQueryResult = type => result =>
+	result.error ? result : result[deAlias(type)];
 
 export const shouldUseJsonOutput = (config, options) =>
-	(options.json === true || config.json === true)
-		&& options.json !== false;
+	(options.json === true || config.json === true) && options.json !== false;
 
 export const shouldUsePrettyOutput = (config, options) =>
-	(options.pretty === true || config.pretty === true)
-		&& options.pretty !== false;
+	(options.pretty === true || config.pretty === true) &&
+	options.pretty !== false;
 
 export const createErrorHandler = prefix => ({ message }) => ({
 	error: `${prefix}: ${message}`,
 });
 
-export const wrapActionCreator = (vorpal, actionCreator, errorPrefix) => parameters =>
+export const wrapActionCreator = (
+	vorpal,
+	actionCreator,
+	errorPrefix,
+) => parameters =>
 	actionCreator(vorpal)(parameters)
 		.catch(createErrorHandler(errorPrefix))
 		.then(printResult(vorpal, parameters.options));
@@ -89,20 +87,21 @@ export const createCommand = ({
 	actionCreator,
 	options = [],
 	errorPrefix,
-}) => function createdCommand(vorpal) {
-	const action = wrapActionCreator(vorpal, actionCreator, errorPrefix);
-	const commandInstance = vorpal
-		.command(command)
-		.autocomplete(autocomplete)
-		.description(description)
-		.action(action);
+}) =>
+	function createdCommand(vorpal) {
+		const action = wrapActionCreator(vorpal, actionCreator, errorPrefix);
+		const commandInstance = vorpal
+			.command(command)
+			.autocomplete(autocomplete)
+			.description(description)
+			.action(action);
 
-	if (alias) commandInstance.alias(alias);
+		if (alias) commandInstance.alias(alias);
 
-	[
-		commonOptions.json,
-		commonOptions.noJson,
-		commonOptions.pretty,
-		...options,
-	].forEach(option => commandInstance.option(...option));
-};
+		[
+			commonOptions.json,
+			commonOptions.noJson,
+			commonOptions.pretty,
+			...options,
+		].forEach(option => commandInstance.option(...option));
+	};

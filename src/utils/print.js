@@ -18,7 +18,7 @@ import { shouldUseJsonOutput, shouldUsePrettyOutput } from './helpers';
 import tablify from './tablify';
 
 // eslint-disable-next-line import/prefer-default-export
-export const printResult = (vorpal, options = {}) => (result) => {
+export const printResult = (vorpal, options = {}) => result => {
 	const useJsonOutput = shouldUseJsonOutput(config, options);
 	const prettifyOutput = shouldUsePrettyOutput(config, options);
 

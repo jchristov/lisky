@@ -15,20 +15,20 @@
  */
 export function itShouldReturnTheBlock() {
 	const { returnValue, block } = this.test.ctx;
-	return (returnValue).should.equal(block);
+	return returnValue.should.equal(block);
 }
 
 export function itShouldReturnAnObjectWithTheAddress() {
 	const { returnValue, address } = this.test.ctx;
-	return (returnValue).should.eql({ address });
+	return returnValue.should.eql({ address });
 }
 
 export function itShouldReturnTheAlias() {
 	const { returnValue, alias } = this.test.ctx;
-	return (returnValue).should.be.equal(alias);
+	return returnValue.should.be.equal(alias);
 }
 
 export function itShouldReturnTheType() {
 	const { returnValue, type } = this.test.ctx;
-	return (returnValue).should.be.equal(type);
+	return returnValue.should.be.equal(type);
 }
