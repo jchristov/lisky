@@ -246,6 +246,13 @@ describe('utils helpers', () => {
 		});
 	});
 	describe('#shouldUseJsonOutput', () => {
+		When(
+			'shouldUseJsonOutput is called with the config and the options',
+			when.shouldUseJsonOutputIsCalledWithTheConfigAndOptions,
+			() => {
+				Then('it should return false', then.itShouldReturnFalse);
+			},
+		);
 		Given('a config with json set to true', given.aConfigWithJsonSetTo, () => {
 			Given(
 				'an options object with json set to true',
@@ -269,6 +276,32 @@ describe('utils helpers', () => {
 						when.shouldUseJsonOutputIsCalledWithTheConfigAndOptions,
 						() => {
 							Then('it should return false', then.itShouldReturnFalse);
+						},
+					);
+				},
+			);
+			Given(
+				'an options object with table set to true',
+				given.anOptionsObjectWithTableSetTo,
+				() => {
+					When(
+						'shouldUseJsonOutput is called with the config and options',
+						when.shouldUseJsonOutputIsCalledWithTheConfigAndOptions,
+						() => {
+							Then('it should return false', then.itShouldReturnFalse);
+						},
+					);
+				},
+			);
+			Given(
+				'an options object with table set to false',
+				given.anOptionsObjectWithTableSetTo,
+				() => {
+					When(
+						'shouldUseJsonOutput is called with the config and options',
+						when.shouldUseJsonOutputIsCalledWithTheConfigAndOptions,
+						() => {
+							Then('it should return true', then.itShouldReturnTrue);
 						},
 					);
 				},
@@ -306,6 +339,32 @@ describe('utils helpers', () => {
 						when.shouldUseJsonOutputIsCalledWithTheConfigAndOptions,
 						() => {
 							Then('it should return false', then.itShouldReturnFalse);
+						},
+					);
+				},
+			);
+			Given(
+				'an options object with table set to true',
+				given.anOptionsObjectWithTableSetTo,
+				() => {
+					When(
+						'shouldUseJsonOutput is called with the config and options',
+						when.shouldUseJsonOutputIsCalledWithTheConfigAndOptions,
+						() => {
+							Then('it should return false', then.itShouldReturnFalse);
+						},
+					);
+				},
+			);
+			Given(
+				'an options object with table set to false',
+				given.anOptionsObjectWithTableSetTo,
+				() => {
+					When(
+						'shouldUseJsonOutput is called with the config and options',
+						when.shouldUseJsonOutputIsCalledWithTheConfigAndOptions,
+						() => {
+							Then('it should return true', then.itShouldReturnTrue);
 						},
 					);
 				},
@@ -553,12 +612,12 @@ describe('utils helpers', () => {
 																				then.theVorpalCommandInstanceShouldHaveTheJsonOption,
 																			);
 																			Then(
-																				'the Vorpal command instance should have the noJson option',
-																				then.theVorpalCommandInstanceShouldHaveTheNoJsonOption,
-																			);
-																			Then(
 																				'the Vorpal command instance should have the pretty option',
 																				then.theVorpalCommandInstanceShouldHaveThePrettyOption,
+																			);
+																			Then(
+																				'the Vorpal command instance should have the table option',
+																				then.theVorpalCommandInstanceShouldHaveTheTableOption,
 																			);
 																			When(
 																				'the command "some command someArg" is executed',
@@ -611,12 +670,12 @@ describe('utils helpers', () => {
 																						then.theVorpalCommandInstanceShouldHaveTheJsonOption,
 																					);
 																					Then(
-																						'the Vorpal command instance should have the noJson option',
-																						then.theVorpalCommandInstanceShouldHaveTheNoJsonOption,
-																					);
-																					Then(
 																						'the Vorpal command instance should have the pretty option',
 																						then.theVorpalCommandInstanceShouldHaveThePrettyOption,
+																					);
+																					Then(
+																						'the Vorpal command instance should have the table option',
+																						then.theVorpalCommandInstanceShouldHaveTheTableOption,
 																					);
 																					When(
 																						'the command "alternative command someArg" is executed',
