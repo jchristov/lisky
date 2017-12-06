@@ -81,8 +81,8 @@ const setUpLiskJSCryptoStubs = () => {
 		'getKeys',
 		'encryptPassphraseWithPassword',
 		'decryptPassphraseWithPassword',
-		'encryptMessageWithSecret',
-		'decryptMessageWithSecret',
+		'encryptMessageWithPassphrase',
+		'decryptMessageWithPassphrase',
 		'getAddressFromPublicKey',
 	].forEach(methodName => sandbox.stub(lisk.crypto, methodName));
 };
@@ -120,12 +120,11 @@ const setUpQueryStubs = () => {
 
 const setUpTransactionsStubs = () => {
 	[
-		'createTransaction',
-		'signTransaction',
-		'createMultisignature',
-		'createSignature',
-		'createDelegate',
-		'createVote',
+		'transfer',
+		'registerSecondPassphrase',
+		'registerDelegate',
+		'castVotes',
+		'registerMultisignature',
 	].forEach(methodName => sandbox.stub(transactions, methodName));
 };
 

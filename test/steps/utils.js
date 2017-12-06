@@ -15,7 +15,7 @@
  */
 import * as createAccount from '../../src/commands/createAccount';
 import * as createTransactionRegisterDelegate from '../../src/commands/createTransactionRegisterDelegate';
-import * as createTransactionCreateMultisignatureAccount from '../../src/commands/createTransactionCreateMultisignatureAccount';
+import * as createTransactionRegisterMultisignatureAccount from '../../src/commands/createTransactionRegisterMultisignatureAccount';
 import * as createTransactionRegisterSecondPassphrase from '../../src/commands/createTransactionRegisterSecondPassphrase';
 import * as createTransactionTransfer from '../../src/commands/createTransactionTransfer';
 import * as decryptMessage from '../../src/commands/decryptMessage';
@@ -77,7 +77,7 @@ export const getActionCreator = actionName =>
 		'create transaction register delegate':
 			createTransactionRegisterDelegate.actionCreator,
 		'create transaction create multisignature account':
-			createTransactionCreateMultisignatureAccount.actionCreator,
+			createTransactionRegisterMultisignatureAccount.actionCreator,
 		'create transaction register second passphrase':
 			createTransactionRegisterSecondPassphrase.actionCreator,
 		'create transaction transfer': createTransactionTransfer.actionCreator,
@@ -110,15 +110,15 @@ export const createStreamStub = on => ({
 export function getTransactionCreatorFunctionNameByType(transactionType) {
 	switch (transactionType) {
 		case 0:
-			return 'createTransaction';
+			return 'transfer';
 		case 1:
-			return 'signTransaction';
+			return 'registerSecondPassphrase';
 		case 2:
-			return 'createDelegate';
+			return 'registerDelegate';
 		case 3:
-			return 'createVote';
+			return 'castVotes';
 		case 4:
-			return 'createMultisignature';
+			return 'registerMultisignature';
 		default:
 			throw new Error(`Transaction type ${transactionType} is not supported`);
 	}
