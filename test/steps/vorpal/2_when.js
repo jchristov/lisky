@@ -14,7 +14,6 @@
  *
  */
 import { wrapActionCreator, createCommand } from '../../../src/utils/helpers';
-import * as inputUtils from '../../../src/utils/input/utils';
 import execFile from '../../../src/execFile';
 import { getFirstQuotedString } from '../utils';
 
@@ -89,10 +88,6 @@ export function theActionIsCalledWithTheIVTheEncryptedPassphraseAndTheOptions() 
 		options,
 	} = this.test.ctx;
 
-	if (typeof inputUtils.getData.resolves === 'function') {
-		inputUtils.getData.onFirstCall().resolves(passphrase);
-	}
-
 	const returnValue = action({ iv, passphrase, options });
 	this.test.ctx.returnValue = returnValue;
 	return returnValue.catch(e => e);
@@ -113,15 +108,9 @@ export function execFileIsCalledWithTheLiskyInstanceTheFilePathAndTheExitFunctio
 
 export function execFileIsCalledWithTheLiskyInstanceTheFilePathTheOptionsAndTheExitFunction() {
 	const { lisky, filePath, options, exit } = this.test.ctx;
-	try {
-		const returnValue = execFile(lisky, filePath, options, exit);
-		this.test.ctx.returnValue = returnValue;
-		return returnValue.catch(e => e);
-	} catch (error) {
-		const testFunction = execFile.bind(null, lisky, filePath, options, exit);
-		this.test.ctx.testFunction = testFunction;
-		return testFunction;
-	}
+	const returnValue = execFile(lisky, filePath, options, exit);
+	this.test.ctx.returnValue = returnValue;
+	return returnValue.catch(e => e);
 }
 
 export function theActionIsCalledWithTheMessageTheNonceTheSenderPublicKeyAndTheOptions() {

@@ -123,6 +123,7 @@ export function getTransactionCreatorFunctionNameByType(transactionType) {
 			return 'castVotes';
 		case 4:
 			return 'registerMultisignature';
+		// istanbul ignore next
 		default:
 			throw new Error(`Transaction type ${transactionType} is not supported`);
 	}
